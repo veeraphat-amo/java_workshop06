@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +9,29 @@ import java.util.List;
 public class UserController {
 
     @GetMapping("/users")
-    public List<UserResponse> getAllUser(
-            @RequestParam(required = false, defaultValue ="1") int page,
-            @RequestParam(required = false, defaultValue = "30") int item) {
+    public PagingResponse getAllUser(
+            @RequestParam(defaultValue ="1") int page,
+            @RequestParam(name = "item_per_page", defaultValue = "30") int itemPerPage) {
 
+        PagingResponse pagingResponse = new PagingResponse(page, itemPerPage);
         List<UserResponse> usersResponseList = new ArrayList<>();
-        for(int i=1;i<=item;i++){
-            usersResponseList.add(new UserResponse(i, "User "+i+", page: "+page));
-        }
-        return usersResponseList;
+        pagingResponse.setUsersResponse(usersResponseList);
+
+        usersResponseList.add(new UserResponse(1, "User 1"));
+        usersResponseList.add(new UserResponse(2, "User 2"));
+        usersResponseList.add(new UserResponse(3, "User 3"));
+
+        return pagingResponse;
     }
 
     @GetMapping("/users/{id}")
     public UserResponse getUserById(@PathVariable int id) {
         return new UserResponse(id, "User " + id);
+    }
+
+    @PostMapping("/users")
+    public UserResponse createNewUser(@RequestBody NewUserRequest request) {
+        return new UserResponse(0, request.getName() + request.getAge());
     }
 
 }

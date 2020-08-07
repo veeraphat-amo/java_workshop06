@@ -1,0 +1,2 @@
+INSERT INTO userResponse (id,name,age,gender,price,availability,brand) VALUES (15, 'Sailboat', 'over8', 'Male', 24.95, true, 'Coolkidz');
+INSERT INTO userResponse (id,name,age,gender,price,availability,brand) VALUES (16, 'Scrabble', 'over8', 'Neutral', 19.95, true, 'Geektoys');
